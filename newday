@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькулятор Столпа Дня</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    h2 {
+      text-align: center;
+      color: #444;
+    }
+    label {
+      margin-top: 10px;
+      display: block;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Узнай свой Столп Дня</h2>
+
+    <label for="date">Дата рождения:</label>
+    <input type="date" id="date" required>
+
+    <button onclick="calculate()">Рассчитать</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <!-- Встроенная версия библиотеки bazica -->
+  <script>
+    const heavenlyStems = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+    const earthlyBranches = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+
+    function calculateDayPillar(date) {
+      const baseDate = new Date('1900-01-31T00:00:00'); // базовая дата
+      const inputDate = new Date(date + 'T00:00:00');
+
+      const diffInMs = inputDate - baseDate;
+      const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+      const stemIndex = (diffInDays + 10) % 10;
+      const branchIndex = (diffInDays + 12) % 12;
+
+      const stem = heavenlyStems[stemIndex < 0 ? stemIndex + 10 : stemIndex];
+      const branch = earthlyBranches[branchIndex < 0 ? branchIndex + 12 : branchIndex];
+
+      return { stem, branch };
+    }
+
+    function calculate() {
+      const date = document.getElementById("date").value;
+      if (!date) {
+        alert("Пожалуйста, укажите дату рождения.");
+        return;
+      }
+
+      const pillar = calculateDayPillar(date);
+      const resultText = `Ваш Столп Дня: <b>${pillar.stem}${pillar.branch}</b>`;
+      document.getElementById("result").innerHTML = resultText;
+    }
+  </script>
+</body>
+</html>
